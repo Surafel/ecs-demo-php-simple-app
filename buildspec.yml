@@ -15,12 +15,12 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build --tag $REPOSITORY_URI:latest  .
+      - docker build --tag 086895981766.dkr.ecr.us-west-1.amazonaws.com/dockerimages:latest  .
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI:latest
+      - docker push 086895981766.dkr.ecr.us-west-1.amazonaws.com/dockerimages:latest
       - echo Writing image definitions file...
       - printf '[{"name":"eagle","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 artifacts:
