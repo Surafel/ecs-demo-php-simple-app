@@ -7,7 +7,7 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws --version
-      - $(aws ecr get-login --region eu-west-1 --no-include-email)
+      - $(aws ecr get-login --region eu-west-1 --no-include-email | sed 's|https://||')
       - REPOSITORY_URI=086895981766.dkr.ecr.us-west-1.amazonaws.com/dockerimages
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
