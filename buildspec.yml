@@ -7,7 +7,7 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws --version
-      - $(aws ecr get-login --region eu-west-1 --no-include-email | sed 's|https://||')
+      - $(aws ecr get-login --region us-west-1 --no-include-email | sed 's|https://||')
       - REPOSITORY_URI=086895981766.dkr.ecr.us-west-1.amazonaws.com/dockerimages
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
@@ -15,12 +15,12 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build --tag 086895981766.dkr.ecr.us-west-1.amazonaws.com/dockerimages:latest  .
+      - docker build --tag $REPOSITORY_URI:latest  .
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker push 086895981766.dkr.ecr.us-west-1.amazonaws.com/dockerimages:latest
+      - docker push $REPOSITORY_URI:latest
       - echo Writing image definitions file...
       - printf '[{"name":"eagle","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 artifacts:
